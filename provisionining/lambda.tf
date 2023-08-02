@@ -8,7 +8,7 @@ resource "aws_lambda_function" "shorty" {
   function_name = "ServerlessShorty"
   timeout       = 5 # seconds
   package_type  = "Image"
-  image_uri     = "${aws_ecr_repository.shorty_ecr_repo.repository_url}:prod"
+  image_uri     = "${aws_ecr_repository.shorty_ecr_repo.repository_url}:latest"
 
   s3_bucket = "shorty-prod-app"
   s3_key    = "v1.0.0/shorty.zip"
