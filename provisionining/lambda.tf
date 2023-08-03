@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "shorty_ecr_repo" {
-  name                 = "igor-shorty"
+  name                 = "shorty"
   // todo: make it immutable, when proper versioning and CI/CD is there
   image_tag_mutability = "MUTABLE"
 }
@@ -9,12 +9,6 @@ resource "aws_lambda_function" "shorty" {
   timeout       = 5 # seconds
   package_type  = "Image"
   image_uri     = "${aws_ecr_repository.shorty_ecr_repo.repository_url}:latest"
-
-  s3_bucket = "shorty-prod-app"
-  s3_key    = "v1.0.0/shorty.zip"
-
-  handler = "main.handler"
-  runtime = "nodejs8.10"
 
   role = "${aws_iam_role.shorty_lambda_exec.arn}"
 
