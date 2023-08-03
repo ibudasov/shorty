@@ -1,27 +1,27 @@
-module "s3_bucket_storage" {
-  source = "terraform-aws-modules/s3-bucket/aws"
-
+resource "aws_s3_bucket" "shorty_bucket" {
   bucket = "shorty-prod-storage"
-  acl    = "public-read"
+  force_destroy = true
 
-  control_object_ownership = true
-  object_ownership         = "ObjectWriter"
+}
 
-  versioning = {
-    enabled = true
+resource "aws_s3_bucket_ownership_controls" "ownership" {
+  bucket = aws_s3_bucket.shorty_bucket.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
   }
 }
 
-module "s3_bucket_app" {
-  source = "terraform-aws-modules/s3-bucket/aws"
+resource "aws_s3_bucket_public_access_block" "pb" {
+  bucket = aws_s3_bucket.shorty_bucket.id
 
-  bucket = "shorty-prod-app"
-  acl    = "private"
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
 
-  control_object_ownership = true
-  object_ownership         = "ObjectWriter"
-
-  versioning = {
-    enabled = true
-  }
+resource "aws_s3_bucket_acl" "acl" {
+  depends_on = [aws_s3_bucket_ownership_controls.ownership]
+  bucket = aws_s3_bucket.shorty_bucket.id
+  acl    = "public-read"
 }
