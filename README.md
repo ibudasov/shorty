@@ -10,3 +10,8 @@ A URL shortening service. Made in a way you don't expect it
 - introduce environments, now it is just `prod`
 - proper versioning for CD, now it is just hardcoded
 - introduce variables in `*.tf` where it makes sense, now it is just hardcoded, because it is the end of the day
+
+# Useful commands
+- brew install awscli
+- aws configure
+- aws sts get-caller-identity
