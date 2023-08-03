@@ -1,5 +1,5 @@
 # build image
-docker build -t shorty .
+docker build -t shorty . --platform=linux/amd64
 
 # test the image locally
 # docker run -p 9000:8080 shorty-lambda-function
