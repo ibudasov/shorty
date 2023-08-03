@@ -50,7 +50,7 @@ resource "aws_api_gateway_deployment" "shorty" {
   ]
 
   rest_api_id = "${aws_api_gateway_rest_api.shorty.id}"
-  stage_name  = "test"
+  stage_name  = "prod"
 }
 
 resource "aws_lambda_permission" "apigw" {
