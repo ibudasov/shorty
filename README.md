@@ -15,3 +15,4 @@ A URL shortening service. Made in a way you don't expect it
 - brew install awscli
 - aws configure
 - aws sts get-caller-identity
+- aws sts get-session-token
