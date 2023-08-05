@@ -1,6 +1,19 @@
 {
   "scripts": {
-    "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js"
+    "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js",
+
+    "deploy-build-image": "docker build -t shorty . --platform=linux/amd64",
+    "deploy-authenticate": "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 014273152590.dkr.ecr.eu-west-1.amazonaws.com/shorty",
+    "deploy-tag": "docker tag shorty:latest 014273152590.dkr.ecr.eu-west-1.amazonaws.com/shorty:latest",
+    "deploy-push": "docker push 014273152590.dkr.ecr.eu-west-1.amazonaws.com/shorty:latest",
+    "deploy": "npm run deploy-build-image && npm run deploy-authenticate && npm run deploy-tag && npm run deploy-push",
+
+    "serve-env": "export $(grep -v '^#' .env | xargs -0)",
+    "serve-build-image": "docker build -t shorty .",
+    "serve-run-container": "docker run -p 9000:8080 -e \"AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}\" -e \"AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}\" shorty",
+    "serve": "npm run serve-env && npm run serve-build-image && npm run serve-run-container",
+
+    "test": "curl \"http://localhost:9000/2015-03-31/functions/function/invocations\" -d '{\"makeItShorter\":\"http://piyun.com/\"}'"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.119",
