@@ -2,9 +2,8 @@ import {APIGatewayEvent, APIGatewayProxyResult, Context} from 'aws-lambda';
 import {PutObjectCommand, S3Client} from "@aws-sdk/client-s3";
 
 export const handler = async (event: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> => {
-    let shortenUrlRequest = ShortenUrlRequest.createFromAPIGatewayEvent(event)
-
     try {
+        let shortenUrlRequest = ShortenUrlRequest.createFromAPIGatewayEvent(event)
         return {
             statusCode: 200,
             body: JSON.stringify({
@@ -14,7 +13,7 @@ export const handler = async (event: APIGatewayEvent, context: Context): Promise
     } catch (err) {
         return {
             statusCode: 500,
-            body: JSON.stringify({error: "Sorry, things went wrong"}),
+            body: JSON.stringify({error: err}),
         }
     }
 };
@@ -36,16 +35,12 @@ class ShortenUrlRequest {
 }
 
 class UrlShortener {
-
-    readonly s3BucketName = "shorty-prod-storage";
-    readonly s3WebsiteUrl = "http://" + this.s3BucketName + ".s3-website-" + process.env.AWS_REGION + ".amazonaws.com/"; // https://stackoverflow.com/questions/72547533/aws-s3-x-amz-website-redirect-location-not-working
     readonly s3Client = new S3Client({region: process.env.AWS_REGION});
 
     public async shorten(shortenURLRequest: ShortenUrlRequest): Promise<string> {
         let shortenedUrlSlug = Math.random().toString(36).slice(2, 10);
-
         let command = new PutObjectCommand({
-            Bucket: this.s3BucketName,
+            Bucket: process.env.AWS_S3_BUCKET_NAME,
             Key: shortenedUrlSlug,
             // https://docs.aws.amazon.com/AmazonS3/latest/userguide/how-to-page-redirect.html
             WebsiteRedirectLocation: shortenURLRequest.originalUrl
@@ -53,6 +48,7 @@ class UrlShortener {
 
         await this.s3Client.send(command);
 
-        return this.s3WebsiteUrl + shortenedUrlSlug
+        // https://stackoverflow.com/questions/72547533/aws-s3-x-amz-website-redirect-location-not-working
+        return "http://" + process.env.AWS_S3_BUCKET_NAME + ".s3-website-" + process.env.AWS_REGION + ".amazonaws.com/" + shortenedUrlSlug
     }
 }
