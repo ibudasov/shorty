@@ -48,6 +48,7 @@ resource "aws_s3_bucket_policy" "public_read_access" {
 
 #DataSource to generate a policy document
 data "aws_iam_policy_document" "public_read_access" {
+  // todo: make this policy more strict
   statement {
     principals {
       type = "*"
@@ -55,14 +56,23 @@ data "aws_iam_policy_document" "public_read_access" {
     }
 
     actions = [
-      "s3:GetObject",
-      "s3:ReadObject",
-      "s3:ListBucket",
+      "s3:*",
     ]
 
     resources = [
       aws_s3_bucket.shorty_bucket.arn,
       "${aws_s3_bucket.shorty_bucket.arn}/*",
     ]
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "remove_old_objects" {
+  bucket = aws_s3_bucket.shorty_bucket.id
+  rule {
+    status = "Enabled"
+    id     = "expire_all_files"
+    expiration {
+      days = 90
+    }
   }
 }

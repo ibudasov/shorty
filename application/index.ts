@@ -2,8 +2,9 @@ import {APIGatewayEvent, APIGatewayProxyResult, Context} from 'aws-lambda';
 import {PutObjectCommand, S3Client} from "@aws-sdk/client-s3";
 
 export const handler = async (event: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> => {
+    let shortenUrlRequest = ShortenUrlRequest.createFromAPIGatewayEvent(event)
+
     try {
-        let shortenUrlRequest = ShortenUrlRequest.createFromAPIGatewayEvent(event)
         return {
             statusCode: 200,
             body: JSON.stringify({
