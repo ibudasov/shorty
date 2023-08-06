@@ -10,7 +10,7 @@
 
     "serve-env": "export $(grep -v '^#' .env | xargs -0)",
     "serve-build-image": "docker build -t shorty .",
-    "serve-run-container": "docker run -p 9000:8080 -e \"AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}\" -e \"AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}\" shorty",
+    "serve-run-container": "docker run -p 9000:8080 -e \"AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}\" -e \"AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}\" -e \"AWS_REGION=${AWS_REGION}}\" shorty",
     "serve": "npm run serve-env && npm run serve-build-image && npm run serve-run-container",
 
     "test": "curl \"http://localhost:9000/2015-03-31/functions/function/invocations\" -d '{\"makeItShorter\":\"http://piyun.com/\"}'"

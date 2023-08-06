@@ -36,12 +36,10 @@ class ShortenUrlRequest {
 }
 
 class UrlShortener {
-    // BEWARE: it is not the bucket URL. It becomes available after the bucket is enabled as a wabsite
-    // https://stackoverflow.com/questions/72547533/aws-s3-x-amz-website-redirect-location-not-working
-    readonly s3WebsiteUrl = "http://shorty-prod-storage.s3-website-eu-west-1.amazonaws.com/";
+
     readonly s3BucketName = "shorty-prod-storage";
-    readonly s3BucketRegion = "eu-west-1";
-    readonly s3Client = new S3Client({region: this.s3BucketRegion});
+    readonly s3WebsiteUrl = "http://" + this.s3BucketName + ".s3-website-" + process.env.AWS_REGION + ".amazonaws.com/"; // https://stackoverflow.com/questions/72547533/aws-s3-x-amz-website-redirect-location-not-working
+    readonly s3Client = new S3Client({region: process.env.AWS_REGION});
 
     public async shorten(shortenURLRequest: ShortenUrlRequest): Promise<string> {
         let shortenedUrlSlug = Math.random().toString(36).slice(2, 10);
