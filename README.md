@@ -12,10 +12,15 @@ An URL shortening service
 - AWS S3 — 99.99%
 - AWS API Gateway — 99.95%
 
-## Availability improvements
+## Research
 - research if ECS is more performant
 - research which storage would be more performant globally than S3 and also reasonably cost effective
 - research how to deal with low availability of AWS API Gateway, because seems like it is needed and non-replaceable
+
+## Availability improvements
+- AWS Glbal Acceleratr — uuse it tgether with API Gateway and Lambda deplyed in muliple regins to speedupp respponse time and imprve availability
+- Implement proper error handling and retries in your Lambda functions. Use built-in retry mechanisms for AWS services (like SQS and SNS) and implement custom retries for external resources. Failed event might be sent to the Dead Letter Quueue and re-tried later
+- Utilize AWS CloudWatch Metrics and Alarms to monitor the health of your Lambda functions and underlying resources. Set up alarms to notify you of potential issues before they impact your application's availability.
 
 ## How it performs — `297.84ms` avg response time
 
