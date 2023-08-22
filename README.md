@@ -18,9 +18,15 @@ An URL shortening service
 - research how to deal with low availability of AWS API Gateway, because seems like it is needed and non-replaceable
 
 ## Availability improvements
-- AWS Glbal Acceleratr — uuse it tgether with API Gateway and Lambda deplyed in muliple regins to speedupp respponse time and imprve availability
-- Implement proper error handling and retries in your Lambda functions. Use built-in retry mechanisms for AWS services (like SQS and SNS) and implement custom retries for external resources. Failed event might be sent to the Dead Letter Quueue and re-tried later
-- Utilize AWS CloudWatch Metrics and Alarms to monitor the health of your Lambda functions and underlying resources. Set up alarms to notify you of potential issues before they impact your application's availability.
+- Compute
+  - Implement proper error handling and retries in your Lambda functions. Use built-in retry mechanisms for AWS services (like SQS and SNS) and implement custom retries for external resources. Failed event might be sent to the Dead Letter Quueue and re-tried later
+  - Utilize AWS CloudWatch Metrics and Alarms to monitor the health of your Lambda functions and underlying resources. Set up alarms to notify you of potential issues before they impact your application's availability.
+- Storage
+  - Enable Cross-Region Replication (CRR) or Same-Region Replication (SRR) to replicate your data across multiple Availability Zones (AZs) or regions. This provides redundancy in case of an AZ-level or regional outage
+  - AWS offers Amazon S3 Transfer Acceleration, which uses Amazon CloudFront's globally distributed edge locations to accelerate uploads to S3. This can improve the speed and availability of data transfers.
+- Network
+  - Use S3 Multi-Region Access Points to get the benefits of Global Accelerator for your object storage workload. S3 Multi-Region Access Points use Global Accelerator transparently to provide a single global endpoint to access data sets that are replicated across multiple AWS Regions. This allows you to build multi-region applications with the same simple architecture used in a single region, and then to run those applications anywhere in the world.
+  - Deploy AWS Lambda in multiple regions and setup different stages for AWS API Gateway to trigger them according to region. Not sure if it will provide a failover 
 
 ## How it performs — `297.84ms` avg response time
 
