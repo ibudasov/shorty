@@ -38,34 +38,6 @@ resource "aws_s3_bucket_website_configuration" "example" {
   }
 }
 
-#https://registry.terraform.io/providers/-/aws/latest/docs/resources/s3_bucket_acl
-
-#Resource to add bucket policy to a bucket
-resource "aws_s3_bucket_policy" "public_read_access" {
-  bucket = aws_s3_bucket.shorty_bucket.id
-  policy = data.aws_iam_policy_document.public_read_access.json
-}
-
-#DataSource to generate a policy document
-data "aws_iam_policy_document" "public_read_access" {
-  // todo: make this policy more strict
-  statement {
-    principals {
-      type = "*"
-      identifiers = ["*"]
-    }
-
-    actions = [
-      "s3:*",
-    ]
-
-    resources = [
-      aws_s3_bucket.shorty_bucket.arn,
-      "${aws_s3_bucket.shorty_bucket.arn}/*",
-    ]
-  }
-}
-
 resource "aws_s3_bucket_lifecycle_configuration" "remove_old_objects" {
   bucket = aws_s3_bucket.shorty_bucket.id
   rule {
@@ -75,4 +47,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "remove_old_objects" {
       days = 90
     }
   }
+}
+
+# Resource to add bucket policy to a bucket
+resource "aws_s3_bucket_policy" "public_read_access" {
+  bucket = aws_s3_bucket.shorty_bucket.id
+  policy = data.aws_iam_policy_document.public_read_access.json
 }
