@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "public_read_access" {
   // todo: make this policy more strict
   statement {
     principals {
-      type = "*"
+      type        = "*"
       identifiers = ["*"]
     }
 
@@ -36,8 +36,8 @@ resource "aws_iam_role" "shorty_lambda_exec" {
   assume_role_policy = jsonencode({
     Statement = [
       {
-        Action    = "sts:AssumeRole"
-        Effect    = "Allow"
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
         Principal = {
           Service = "lambda.amazonaws.com"
         }
