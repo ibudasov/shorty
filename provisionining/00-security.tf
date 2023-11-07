@@ -7,10 +7,8 @@
 # resources should be able to use this module.
 # 2. The team is unlikely to change the resources in this module often, so making them a separate 
 # module decreases unnecessary churn and risk.
+
 # https://registry.terraform.io/providers/-/aws/latest/docs/resources/s3_bucket_acl
-
-
-# DataSource to generate a policy document
 data "aws_iam_policy_document" "public_read_access" {
   // todo: make this policy more strict
   statement {
