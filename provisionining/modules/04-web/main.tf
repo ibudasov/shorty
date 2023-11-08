@@ -14,6 +14,32 @@
 # 2. The resources in this module change often (with each code release). By separating 
 # them into their own module, you decrease unnecessary churn and risk for other modules.
 
+resource "aws_api_gateway_rest_api" "shorty" {
+  name        = "ServerlessShorty"
+  description = "Serverless Application Shorty"
+}
+
+resource "aws_api_gateway_deployment" "shorty" {
+  depends_on = [
+    aws_api_gateway_integration.lambda,
+    aws_api_gateway_integration.lambda_root,
+  ]
+
+  rest_api_id = aws_api_gateway_rest_api.shorty.id
+  stage_name  = "prod"
+}
+
+resource "aws_lambda_permission" "apigw" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = var.lambda_function_name
+  principal     = "apigateway.amazonaws.com"
+
+  # The /*/* portion grants access from any method on any resource
+  # within the API Gateway "REST API".
+  source_arn = "${aws_api_gateway_rest_api.shorty.execution_arn}/*/*"
+}
+
 resource "aws_api_gateway_integration" "lambda" {
   rest_api_id = aws_api_gateway_rest_api.shorty.id
   resource_id = aws_api_gateway_method.proxy.resource_id
@@ -21,7 +47,7 @@ resource "aws_api_gateway_integration" "lambda" {
 
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = module.app.lambda_function_invoke_arn
+  uri                     = var.lambda_function_invoke_arn
 }
 
 resource "aws_api_gateway_method" "proxy_root" {
@@ -38,7 +64,7 @@ resource "aws_api_gateway_integration" "lambda_root" {
 
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = module.app.lambda_function_invoke_arn
+  uri                     = var.lambda_function_invoke_arn
 }
 
 resource "aws_api_gateway_resource" "proxy" {

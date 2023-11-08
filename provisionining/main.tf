@@ -30,3 +30,12 @@ module "app" {
   bucket_name = module.database.bucket_name
   shorty_lambda_exec_policy_arn = module.security.shorty_lambda_exec_arn
 }
+
+module "web" {
+  source = "./modules/04-web"
+ 
+  depends_on = [ module.app ]
+ 
+  lambda_function_invoke_arn = module.app.lambda_function_invoke_arn
+  lambda_function_name = module.app.lambda_function_name
+}
