@@ -23,7 +23,7 @@ module "database" {
 }
 
 module "app" {
-  source = "./modules/03-app"
+  source = "./modules/02-app"
  
   depends_on = [ module.database, module.security ]
  
@@ -32,7 +32,7 @@ module "app" {
 }
 
 module "web" {
-  source = "./modules/04-web"
+  source = "./modules/03-web"
  
   depends_on = [ module.app ]
  
