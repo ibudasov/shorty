@@ -12,3 +12,6 @@ provider "aws" {
   shared_credentials_files = ["/Users/igor/.aws/credentials"]
 }
 
+module "security" {
+  source = "./modules/00-security"
+}

@@ -67,3 +67,23 @@ resource "aws_s3_bucket_policy" "public_read_access" {
   bucket = aws_s3_bucket.shorty_bucket.id
   policy = data.aws_iam_policy_document.public_read_access.json
 }
+
+# https://registry.terraform.io/providers/-/aws/latest/docs/resources/s3_bucket_acl
+data "aws_iam_policy_document" "public_read_access" {
+  // todo: make this policy more strict
+  statement {
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "s3:*",
+    ]
+
+    resources = [
+      aws_s3_bucket.shorty_bucket.arn,
+      "${aws_s3_bucket.shorty_bucket.arn}/*",
+    ]
+  }
+}

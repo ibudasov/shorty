@@ -8,25 +8,6 @@
 # 2. The team is unlikely to change the resources in this module often, so making them a separate 
 # module decreases unnecessary churn and risk.
 
-# https://registry.terraform.io/providers/-/aws/latest/docs/resources/s3_bucket_acl
-data "aws_iam_policy_document" "public_read_access" {
-  // todo: make this policy more strict
-  statement {
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-
-    actions = [
-      "s3:*",
-    ]
-
-    resources = [
-      aws_s3_bucket.shorty_bucket.arn,
-      "${aws_s3_bucket.shorty_bucket.arn}/*",
-    ]
-  }
-}
 
 resource "aws_iam_role" "shorty_lambda_exec" {
   name = "serverless_shorty_lambda"
@@ -43,3 +24,4 @@ resource "aws_iam_role" "shorty_lambda_exec" {
     ]
   })
 }
+

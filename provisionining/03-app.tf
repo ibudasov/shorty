@@ -23,7 +23,7 @@ resource "aws_lambda_function" "shorty" {
   package_type  = "Image"
   image_uri     = "${aws_ecr_repository.shorty_ecr_repo.repository_url}:latest"
 
-  role = aws_iam_role.shorty_lambda_exec.arn
+  role = module.security.shorty_lambda_exec_arn
 
   environment {
     variables = {
