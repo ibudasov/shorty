@@ -15,3 +15,8 @@ provider "aws" {
 module "security" {
   source = "./modules/00-security"
 }
+
+module "database" {
+  source = "./modules/01-database"
+  depends_on = [ module.security ]
+}

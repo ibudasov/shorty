@@ -28,7 +28,7 @@ resource "aws_lambda_function" "shorty" {
   environment {
     variables = {
       ENVIRONMENT        = "prod"
-      AWS_S3_BUCKET_NAME = aws_s3_bucket.shorty_bucket.bucket
+      AWS_S3_BUCKET_NAME = module.database.bucket_name
     }
   }
 }
