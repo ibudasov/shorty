@@ -27,7 +27,7 @@ resource "aws_api_gateway_deployment" "shorty" {
 resource "aws_lambda_permission" "apigw" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.shorty.function_name
+  function_name = module.app.lambda_function_name
   principal     = "apigateway.amazonaws.com"
 
   # The /*/* portion grants access from any method on any resource

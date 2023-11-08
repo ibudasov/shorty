@@ -23,12 +23,12 @@ resource "aws_lambda_function" "shorty" {
   package_type  = "Image"
   image_uri     = "${aws_ecr_repository.shorty_ecr_repo.repository_url}:latest"
 
-  role = module.security.shorty_lambda_exec_arn
+  role = var.shorty_lambda_exec_policy_arn
 
   environment {
     variables = {
       ENVIRONMENT        = "prod"
-      AWS_S3_BUCKET_NAME = module.database.bucket_name
+      AWS_S3_BUCKET_NAME = var.bucket_name
     }
   }
 }
