@@ -1,19 +1,3 @@
-# Web module
-
-# The web module creates and manages the infrastructure needed to run the web application. 
-# Even though we do not use a typical web server, this configuration of HTTP paths and methods
-# reminds of configuring a web server.
-
-# This module contains these resources because they are highly encapsulated and have 
-# highly volatility.
-
-# 1.The resources in this module are tightly scoped and associated specifically with the 
-# web application (for example, this module provisions an AMI containing the latest web 
-# application code release). As a result, they are grouped together into a single module 
-# so web application team members can easily deploy them.
-# 2. The resources in this module change often (with each code release). By separating 
-# them into their own module, you decrease unnecessary churn and risk for other modules.
-
 resource "aws_api_gateway_rest_api" "shorty" {
   name        = "ServerlessShorty"
   description = "Serverless Application Shorty"
