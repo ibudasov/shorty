@@ -1,0 +1,6 @@
+# .gitignore file for node.js application
+
+
+
+# dependencies
+node_modules
