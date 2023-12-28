@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: {{ .Release.Name }}-service
+      port:
+        number: 80
+
+# https://kubernetes.io/docs/concepts/services-networking/ingress/
+
+# before continuing make sure you have a controller running here
+# kubectl get pods
+
+# if not -- https://kubernetes.github.io/ingress-nginx/deploy/#docker-for-mac
+# helm upgrade --install ingress-nginx ingress-nginx \
+#   --repo https://kubernetes.github.io/ingress-nginx \
+#   --namespace ingress-nginx --create-namespace
+
+# then you can deploy this ingress. Make supe that external IP is available
+# kubectl get ingress --watch
