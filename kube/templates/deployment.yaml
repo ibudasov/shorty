@@ -16,5 +16,13 @@ spec:
         - name: app-container
           image: nginx # the version does not matter for now
           ports:
-          - containerPort: 30003
+          - containerPort: 80 # this is the port nginx is listening on
             name: app-port
+          volumeMounts:
+          - name: custom-docroot
+            mountPath: /usr/share/nginx/html
+        volumes:
+        - name: custom-docroot
+          hostPath:
+            path: /tmp
+            type: Directory  
