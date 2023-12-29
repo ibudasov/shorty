@@ -16,5 +16,5 @@ spec:
         - name: app-container
           image: nginx # the version does not matter for now
           ports:
-          - containerPort: 81
+          - containerPort: 30003
             name: app-port
